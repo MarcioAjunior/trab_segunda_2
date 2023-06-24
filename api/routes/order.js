@@ -83,7 +83,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.params.userId });
-    res.status(200).json(orders);
+    res.status(200).json({orders : orders});
   } catch (err) {
     res.status(500).json(err);
   }
@@ -92,12 +92,37 @@ router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
 // //GET ALL
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
-  try {
-    const orders = await Order.find();
-    res.status(200).json(orders);
-  } catch (err) {
-    res.status(500).json(err);
+  let result_orders = [];
+
+  const get_name_products = async(lista_de_produtos) => {
+    let nome_produtos = []
+    for(let i of lista_de_produtos){
+      prod = await prisma.produto.findUnique({where : {id : i.produto_id}})
+      nome_produtos.push(prod)
+    }
+    console.log(nome_produtos)
+    return nome_produtos
   }
+
+
+  try {
+    const orders = await prisma.pedido.findMany()
+    for(const order of orders){
+       let ordenet = {
+        id : order.id,
+        status : order.status,
+        vlr_total : order.vlr_total,
+        usuario : await prisma.usuario.findUnique({where : { id : order.usuario_id } }) ,
+        itens : await get_name_products(await prisma.carrinho.findMany({where : {pedido_id : order.id} }))
+      }
+      result_orders.push(ordenet)
+    }
+    res.status(200).json({orders : result_orders});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error : err});
+  }
+
 });
 
 // GET MONTHLY INCOME

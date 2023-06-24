@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {mobile} from "../responsive";
-import { login } from "../redux/apiCalls";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import axios from "axios";
 import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   width: 100%;
@@ -75,8 +74,15 @@ const ContainerPedido = styled.div`
   margin: 10px;
 `;
 
+const Success = styled.span`
+  color: green;
+`;
+
 const AddProducts = () => {
 
+  const token = "Bearer " + useSelector(state=>state.user.currentUser.accessToken);
+
+  const [orders, setOrders] = useState([]);
   const history = useHistory();
 
   const handleClick = (e) => {
@@ -84,25 +90,48 @@ const AddProducts = () => {
     history.push("/");
   }
 
+  useEffect(() => {
+    
+    const getOrders = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/orders', {headers : {
+          'token' : token
+        }});
+        setOrders(res.data.orders);
+        console.log(res.data.orders);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getOrders();
+  }, []);
+
   return (
     <Container>
       <Wrapper>
         <Title>Listagem de pedidos</Title>
         <Form>
 
-        { [1,2,3,4,5,6,7,8,9,10,11,12,13].map((item) => (
-            <ContainerPedido>
+        { orders.map((item) => (
+            <ContainerPedido key={item.id}>
                 <ItemPedido>
-                  Numero do pedido : {item}
+                  Numero do pedido : {item.id}
                 </ItemPedido>
                 <ItemPedido>
-                  Usuario do pedido : {item}
+                  Usuario do pedido : {item.usuario.nome} 
                 </ItemPedido>
                 <ItemPedido>
-                  Status : {item}
+                  Status : {item.status == 'PENDENTE' ? (<Error>{item.status}</Error>) : (<Success>{item.status}</Success>)}
                 </ItemPedido>
                 <ItemPedido>
-                  Itens : {item}
+                  Itens : {item.itens?.map((item) => (
+                      <ItemPedido>
+                        {item.nome},
+                    </ItemPedido>
+                  ))}
+                </ItemPedido>
+                <ItemPedido>
+                  Valor do pedido : {item.vlr_total}
                 </ItemPedido>
             </ContainerPedido>
             )) }

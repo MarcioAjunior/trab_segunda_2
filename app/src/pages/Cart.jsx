@@ -171,6 +171,7 @@ const Link_a = styled.a`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const usuario = useSelector((state) => state.user.currentUser.id);
   
 
   const [stripeToken, setStripeToken] = useState(null);
@@ -184,7 +185,7 @@ const Cart = () => {
   const handleClick = (e) => {
     e.preventDefault();
     console.log(cart, 'MEU CART')
-    saveCart(dispatch, {...cart, idUser : {} });
+    saveCart(dispatch, {...cart, idUser : usuario });
   }
 
   useEffect(() => {
@@ -244,7 +245,7 @@ const Cart = () => {
                     <ProductAmount> quantidade :  {product.quantity}</ProductAmount>
                   </ProductAmountContainer>
                   <ProductPrice>
-                    R$ {product.preco * product.quantity}
+                    R$ { product.preco * product.quantity}
                   </ProductPrice>
                 </PriceDetail>
               </Product>
