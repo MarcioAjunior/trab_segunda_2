@@ -54,13 +54,12 @@ try {
 //LOGIN
 router.post('/login', async (req, res) => {
   try {
-    const user = await prisma.usuario.findFirst({
+    const user = await prisma.usuario.findUnique({
       where : {
-        usuario : req.username
+        usuario : req.body.username
       }
     })
 
-    console.log(user,'AAAAAAA')
     if(user == undefined){
       !user && res.status(401).json("Usuario não encontrado");
     }
