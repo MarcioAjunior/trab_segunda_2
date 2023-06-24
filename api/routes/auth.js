@@ -60,14 +60,24 @@ router.post('/login', async (req, res) => {
       }
     })
 
-    !user && res.status(401).json("Usuario não encontrado");
+    console.log(user,'AAAAAAA')
+    if(user == undefined){
+      !user && res.status(401).json("Usuario não encontrado");
+    }
 
     const hashedPassword = CryptoJS.AES.decrypt(
       user.senha,
       process.env.PASS_SEC
   );
       const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-      const inputPassword = req.body.password;        
+
+      
+
+      const inputPassword = req.body.password;
+      
+      console.log(originalPassword);
+      console.log(inputPassword);
+      
       originalPassword != inputPassword &&
       res.status(401).json("Senha invalida");
 
@@ -80,10 +90,10 @@ router.post('/login', async (req, res) => {
             {expiresIn:"3d"}
         );
 
-        res.status(200).json({...user, accessToken});
+        res.status(200).json({...user, accessToken : accessToken});
   } catch (error) {
     console.log(error)
-    res.status(500).json({error});
+    res.status(500).json('');
   }  
   
   // try{
