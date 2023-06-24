@@ -25,15 +25,15 @@ router.post("/register", async (req, res) => {
 try {
   const user = await prisma.usuario.create({
     data : {
-      nome : nome,
-      email : email,
-      usuario : username,
-      cpf : cpf,
-      fone : fone,
-      endereco : endereco,
-      cidade : cidade,
-      bairro : bairro,
-      cep : cep,
+      nome : String(nome),
+      email : String(email),
+      usuario : String(username),
+      cpf : String(cpf),
+      fone : String(fone),
+      endereco : String(endereco),
+      cidade : String(cidade),
+      bairro : String(bairro),
+      cep : String(cep),
       numero : Number(numero),
       senha: CryptoJS.AES.encrypt(
             senha,
