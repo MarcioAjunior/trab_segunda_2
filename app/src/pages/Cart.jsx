@@ -1,5 +1,3 @@
-import { Add, Remove } from "@material-ui/icons";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -10,7 +8,8 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-
+import { saveCart } from "../redux/apiCalls";
+import { useDispatch, useSelector } from "react-redux";
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div``;
@@ -176,10 +175,17 @@ const Cart = () => {
 
   const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const onToken = (token) => {
     setStripeToken(token);
   };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log(cart, 'MEU CART')
+    saveCart(dispatch, {...cart, idUser : {} });
+  }
 
   useEffect(() => {
     const makeRequest = async () => {
@@ -225,7 +231,7 @@ const Cart = () => {
                   <Image src={product.img} />
                   <Details>
                     <ProductName>
-                      <b>Product:</b> {product.title}
+                      <b>Produto:</b> {product.title}
                     </ProductName>
                     <ProductId>
                       <b>ID:</b> {product._id}
@@ -238,7 +244,7 @@ const Cart = () => {
                     <ProductAmount> quantidade :  {product.quantity}</ProductAmount>
                   </ProductAmountContainer>
                   <ProductPrice>
-                    R$ {product.price * product.quantity}
+                    R$ {product.preco * product.quantity}
                   </ProductPrice>
                 </PriceDetail>
               </Product>
@@ -259,7 +265,7 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>R$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <Button>FAZER PEDIDO</Button>
+            <Button onClick={handleClick}>FAZER PEDIDO</Button>
             <StripeCheckout
               name="PENAPP"
               image="https://img.freepik.com/fotos-premium/linda-caneta-tinteiro_309761-528.jpg"

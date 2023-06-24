@@ -4,20 +4,53 @@ const {
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } = require("./verifyToken");
+const { PrismaClient } = require("@prisma/client");
 
 const router = require("express").Router();
 
+const prisma = new PrismaClient();
 //CREATE
 
 router.post("/", verifyToken, async (req, res) => {
   const newOrder = new Order(req.body);
 
+  // try {
+  //   const savedOrder = await newOrder.save();
+  //   res.status(200).json(savedOrder);
+  // } catch (err) {
+  //   res.status(500).json(err);
+  // }
+
   try {
-    const savedOrder = await newOrder.save();
-    res.status(200).json(savedOrder);
-  } catch (err) {
-    res.status(500).json(err);
+    const {userId, total, produtos} = req.body;
+
+    const pedido = await prisma.pedido.create({
+      data: {
+        usuario_id: userId, // Forneça o ID de usuário apropriado
+        vlr_total: total, // Defina o valor total inicial como 0 ou ajuste conforme necessário
+        status: 'PENDENTE',
+      },
+    });
+
+    for(const item of produtos){
+      console.log(item)
+      await prisma.carrinho.create({
+        data : {
+          qtde : Number(item.quantity),
+          pedido_id : pedido.id,
+          produto_id : item.id,
+          vlr_unitario : item.preco,
+        }
+      })
+    }
+
+    res.status(201).json({msg : 'Carrinho cadastrado com sucesso'});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({msg : 'Erro ao cadastrar carrinho'});
   }
+  
 });
 
 //UPDATE

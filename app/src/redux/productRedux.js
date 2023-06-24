@@ -16,11 +16,10 @@ const productSlice = createSlice({
       state.error = false;
       state.success = true;
     },
-    saveFailure: (state) => {
+    saveCartFailure: (state) => {
       state.isFetching = false;
       state.error = true;
     },
-
   },
 });
 

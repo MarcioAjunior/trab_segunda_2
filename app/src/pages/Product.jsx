@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 import { publicRequest } from "../requestMethods";
 import { useEffect, useState } from "react";
 import { addProduct } from "../redux/cartRedux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Container = styled.div``;
 
@@ -129,8 +129,7 @@ const Product = () => {
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
 
-  const [color, setColor] = useState("");
-  const [size, setSize] = useState("");
+  const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
 
@@ -155,7 +154,7 @@ const Product = () => {
 
   const handleClick = () => {
     dispatch(
-      addProduct({ ...product, quantity, color, size})
+      addProduct({ ...product, quantity, price : product.preco })
     );
   };
 
@@ -165,19 +164,13 @@ const Product = () => {
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src={product.img} />
+          <Image src={product.imagem} />
         </ImgContainer>
         <InfoContainer>
-        <Title>{product.title}</Title>
-        <Desc>{product.desc}</Desc>
-        <Price>$ {product.price}</Price>
+        <Title>{product.nome}</Title>
+        <Desc>{product.descricao}</Desc>
+        <Price>$ {product.preco}</Price>
           <FilterContainer>
-            <Filter>
-              <FilterTitle>Cor</FilterTitle>
-              {product.color?.map((c) => (
-                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
-              ))}
-            </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>

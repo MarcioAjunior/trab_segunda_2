@@ -1,5 +1,6 @@
 import { loginFailure, loginStart, loginSuccess, registerFailure, registerStart, registerSuccess } from "./userRedux";
 import { saveStart, saveSuccess, saveFailure } from "./productRedux";
+import { saveCartStart, saveCartSuccess, saveCartFailure }  from "./cartRedux";
 import { publicRequest, userRequest } from "../requestMethods";
 
 //REGISTER
@@ -26,12 +27,23 @@ export const login = async (dispatch, user) => {
 
 //CADASTRO DE PRODUTO
 export const saveProduct = async (dispatch, produto, token) => {
-  dispatch(saveStart());
+  dispatch(saveCartStart());
   try {
     const res = await userRequest.post("/products", produto, { headers :{ 'token': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjg3NTg3NzYxLCJleHAiOjE2ODc4NDY5NjF9.o1u0gF7YOEOB4X6RMAAqSLZPqfbDUSgAYYnsZOpUvOw"} });
-    dispatch(saveSuccess());
+    dispatch(saveCartSuccess());
   } catch (err) {
     console.log(err);
     dispatch(saveFailure());
+  }
+};
+//CADASTRO CARRINHO
+export const saveCart = async (dispatch, cart) => {
+  dispatch(saveStart());
+  try {
+    const res = await userRequest.post("/orders", cart, { headers :{ 'token': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjg3NTg3NzYxLCJleHAiOjE2ODc4NDY5NjF9.o1u0gF7YOEOB4X6RMAAqSLZPqfbDUSgAYYnsZOpUvOw"} });
+    dispatch(saveSuccess());
+  } catch (err) {
+    console.log(err);
+    dispatch(saveCartFailure());
   }
 };
