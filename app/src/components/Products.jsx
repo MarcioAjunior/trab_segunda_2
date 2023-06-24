@@ -16,7 +16,7 @@ const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    console.log('EXECUTEI')
+    
     const getProducts = async () => {
       try {
         const res = await axios.get(
@@ -36,7 +36,7 @@ const Products = ({ cat, filters, sort }) => {
       { products
             .slice(0, 8)
             .map((item) => {
-            console.log(item.id)
+              console.log(item);
               return (
             <Product item={item} key={item.id} />
             )} )}
