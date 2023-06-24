@@ -228,13 +228,13 @@ const Cart = () => {
           {cart.products.map((product) => (
               <Product>
                 <ProductDetail>
-                  <Image src={product.img} />
+                  <Image src={product.imagem} />
                   <Details>
                     <ProductName>
-                      <b>Produto:</b> {product.title}
+                      <b>Produto:</b> {product.nome}
                     </ProductName>
                     <ProductId>
-                      <b>ID:</b> {product._id}
+                      <b>ID:</b> {product.id}
                     </ProductId>
                     <ProductColor color={product.color} />
                   </Details>
