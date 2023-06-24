@@ -86,10 +86,10 @@ const AddProducts = () => {
   const dispatch = useDispatch();
   const token = useSelector(state=>state.user.accessToken);
   const succes = useSelector(state=>state.product.success);
+  const error = useSelector(state=>state.product.error);
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log()
     saveProduct(dispatch, produto, token);
   }
 
@@ -129,6 +129,7 @@ useEffect(() => console.log(JSON.stringify(produto)), [produto])
             Cadastrar Produto
           </Button>
           {succes && <Success>Cadastrado com sucesso</Success> }
+          {error && <Error>Erro ao cadastrar produto</Error> }
         </Form>
       </Wrapper>
     </Container>

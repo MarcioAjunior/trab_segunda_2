@@ -27,10 +27,10 @@ export const login = async (dispatch, user) => {
 
 //CADASTRO DE PRODUTO
 export const saveProduct = async (dispatch, produto, token) => {
-  dispatch(saveCartStart());
+  dispatch(saveStart());
   try {
     const res = await userRequest.post("/products", produto, { headers :{ 'token': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjg3NTg3NzYxLCJleHAiOjE2ODc4NDY5NjF9.o1u0gF7YOEOB4X6RMAAqSLZPqfbDUSgAYYnsZOpUvOw"} });
-    dispatch(saveCartSuccess());
+    dispatch(saveSuccess());
   } catch (err) {
     console.log(err);
     dispatch(saveFailure());
@@ -38,10 +38,10 @@ export const saveProduct = async (dispatch, produto, token) => {
 };
 //CADASTRO CARRINHO
 export const saveCart = async (dispatch, cart) => {
-  dispatch(saveStart());
+  dispatch(saveCartStart());
   try {
     const res = await userRequest.post("/orders", cart, { headers :{ 'token': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjg3NTg3NzYxLCJleHAiOjE2ODc4NDY5NjF9.o1u0gF7YOEOB4X6RMAAqSLZPqfbDUSgAYYnsZOpUvOw"} });
-    dispatch(saveSuccess());
+    dispatch(saveCartSuccess());
   } catch (err) {
     console.log(err);
     dispatch(saveCartFailure());

@@ -16,7 +16,8 @@ const productSlice = createSlice({
       state.error = false;
       state.success = true;
     },
-    saveCartFailure: (state) => {
+    saveFailure: (state) => {
+      state.success = false;
       state.isFetching = false;
       state.error = true;
     },
