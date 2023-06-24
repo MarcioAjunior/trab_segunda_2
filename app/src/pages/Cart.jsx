@@ -192,7 +192,9 @@ const Cart = () => {
         history.push("/success", {
           stripeData: res.data,
           products: cart, });
-      } catch {}
+      } catch {
+        console.log('erro 1');
+      }
     };
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, history]);

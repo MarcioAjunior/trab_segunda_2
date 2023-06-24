@@ -4,6 +4,7 @@ import {mobile} from "../responsive";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
 const Container = styled.div`
   width: 100%;
@@ -64,28 +65,51 @@ const Error = styled.span`
   color: red;
 `;
 
+const ItemPedido = styled.span`
+  margin: 2px 10px;
+`;
+
+const ContainerPedido = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+`;
+
 const AddProducts = () => {
+
+  const history = useHistory();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    history.push("/");
+  }
 
   return (
     <Container>
       <Wrapper>
         <Title>Listagem de pedidos</Title>
         <Form>
-           { [1,2,3,4,5,6,7,8,9,10,11,12,13].map((item) => (
-                <Input 
-                placeholder="Nome de Usuario"
-                // onChange={(e) => setUsername(e.target.value)} 
-                />
+
+        { [1,2,3,4,5,6,7,8,9,10,11,12,13].map((item) => (
+            <ContainerPedido>
+                <ItemPedido>
+                  Numero do pedido : {item}
+                </ItemPedido>
+                <ItemPedido>
+                  Usuario do pedido : {item}
+                </ItemPedido>
+                <ItemPedido>
+                  Status : {item}
+                </ItemPedido>
+                <ItemPedido>
+                  Itens : {item}
+                </ItemPedido>
+            </ContainerPedido>
             )) }
-          <Button disabled={false}>
-            LOGIN
+          <Button onClick={handleClick}>
+            VOLTAR
           </Button>
         </Form>
-        <Link_a>
-          <Link to="/register">
-            Crie uma conta
-          </Link>
-        </Link_a>
       </Wrapper>
     </Container>
   );

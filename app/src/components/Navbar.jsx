@@ -92,7 +92,7 @@ const Navbar = () => {
       <Wrapper>
         <Left>
         {user?.is_adm && <Link to="/addproducts"> <MenuItem>Cadastrar produto</MenuItem></Link>} 
-        {user?.is_adm && <Link to="/listorders"><MenuItem>Listagem de pedidos</MenuItem></Link> }
+        {true /*user?.is_adm*/ && <Link to="/listorders"><MenuItem>Listagem de pedidos</MenuItem></Link> }
         </Left>
         <Center>
           <Logo>
