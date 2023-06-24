@@ -124,6 +124,8 @@ const Product = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
 
+  console.log(id,'IIIIIDDDD')
+
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
 
@@ -136,7 +138,8 @@ const Product = () => {
     const getProduct = async () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
-        setProduct(res.data);
+        console.log(res.data.produto)
+        setProduct(res.data.produto);
       } catch {}
     };
     getProduct();

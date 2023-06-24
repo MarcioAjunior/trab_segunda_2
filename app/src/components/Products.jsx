@@ -31,11 +31,17 @@ const Products = ({ cat, filters, sort }) => {
   }, [cat]);
 
   return (
+    
     <Container>
       { products
             .slice(0, 8)
-            .map((item) => <Product item={item} key={item.id} />)}
+            .map((item) => {
+            console.log(item.id)
+              return (
+            <Product item={item} key={item.id} />
+            )} )}
     </Container>
+    
   );
 };
 
