@@ -10,17 +10,22 @@ import { userRequest } from "../requestMethods";
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  background: gray;
-  background-size: cover;
-  display: flex;
-  align-items: top;
-  justify-content: center;
+width: 100vw;
+height: 100vh;
+background: linear-gradient(
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.5)
+  ),
+  url("https://s1.1zoom.me/b5050/497/Closeup_Ballpoint_pen_526272_1920x1080.jpg")
+    center;
+background-size: cover;
+display: flex;
+align-items: center;
+justify-content: center;
 `;
 
 const Wrapper = styled.div`
-  width: 85%;
+  width: 50%;
   padding: 20px;
   background-color: white;
   ${mobile({ width: "75%" })}
