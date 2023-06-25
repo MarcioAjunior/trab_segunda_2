@@ -19,6 +19,14 @@ const Wrapper = styled.div`
   ${mobile({ padding: "10px" })}
 `;
 
+const Success = styled.span`
+  color: green;
+`;
+
+const Error = styled.span`
+  color: red;
+`;
+
 const Title = styled.h1`
   font-weight: 300;
   text-align: center;
@@ -92,8 +100,6 @@ const ProductColor = styled.div`
   border-radius: 50%;
   background-color: ${(props) => props.color};
 `;
-
-const ProductSize = styled.span``;
 
 const PriceDetail = styled.div`
   flex: 1;
@@ -171,6 +177,7 @@ const Link_a = styled.a`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const pedido = useSelector((state) => state.pedido);
   const usuario = useSelector((state) => state.user.currentUser.id);
   
 
@@ -195,8 +202,10 @@ const Cart = () => {
         const res = await userRequest.post("/checkout/payment", {
           tokenId: stripeToken.id,
           amount: cart.total * 100,
+          pedido : pedido.numeroPedido
         });
-        history.push("/success", {
+
+        history.push("/listorders", {
           stripeData: res.data,
           products: cart, });
       } catch {
@@ -267,6 +276,8 @@ const Cart = () => {
               <SummaryItemPrice>R$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <Button onClick={handleClick}>FAZER PEDIDO</Button>
+            {cart.success && <Success> Cadastrado com sucesso </Success>}
+            {cart.error && <Error> Houve um erro... </Error>}
             <StripeCheckout
               name="PENAPP"
               image="https://img.freepik.com/fotos-premium/linda-caneta-tinteiro_309761-528.jpg"

@@ -1,7 +1,20 @@
 const router = require("express").Router();
 const stripe = require("stripe")("sk_test_51NKOC3IP0saOLRhOpP5xyHMVEag7tfJHo5cyZWEl2tCAqDVIHbNve55nAwHhZeJheCzxZ8ZPb2lXqcufW1hxAFYo003kMP3IRZ");
+const { PrismaClient } = require("@prisma/client");
 
-router.post("/payment", (req, res) => {
+const prisma = new PrismaClient();
+
+router.post("/payment", async (req, res) => {
+
+  const updatePedido = await prisma.pedido.update({
+    where : {
+      id : req.body.pedido
+    },
+    data : {
+        status : "PAGO"
+    }
+  })
+
   stripe.charges.create(
     {
       source: req.body.tokenId,

@@ -81,7 +81,7 @@ const Navbar = () => {
   const checkout = () => {
     try {
       localStorage.removeItem("persist:root");
-      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      window.location.href = "http://localhost:3000/login";
     } catch (error) {
       console.log(error);
     }  

@@ -37,7 +37,7 @@ router.post("/", verifyToken, async (req, res) => {
       })
     }
 
-    res.status(201).json({msg : 'Carrinho cadastrado com sucesso'});
+    res.status(201).json({pedido : pedido.id});
 
   } catch (error) {
     console.log(error);

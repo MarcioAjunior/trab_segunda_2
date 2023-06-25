@@ -1,6 +1,7 @@
 import { loginFailure, loginStart, loginSuccess, registerFailure, registerStart, registerSuccess } from "./userRedux";
 import { saveStart, saveSuccess, saveFailure } from "./productRedux";
 import { saveCartStart, saveCartSuccess, saveCartFailure }  from "./cartRedux";
+import { pedidoSuccess }  from "./pedidoRedux";
 import { publicRequest, userRequest } from "../requestMethods";
 
 //REGISTER
@@ -36,12 +37,13 @@ export const saveProduct = async (dispatch, produto, token) => {
     dispatch(saveFailure());
   }
 };
-//CADASTRO CARRINHO
 export const saveCart = async (dispatch, cart) => {
   dispatch(saveCartStart());
   try {
     const res = await userRequest.post("/orders", cart, { headers :{ 'token': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjg3NTg3NzYxLCJleHAiOjE2ODc4NDY5NjF9.o1u0gF7YOEOB4X6RMAAqSLZPqfbDUSgAYYnsZOpUvOw"} });
     dispatch(saveCartSuccess());
+    console.log(res.data?.pedido, 'AAAA, toma o numero do pedido')
+    dispatch(pedidoSuccess(res.data?.pedido))
   } catch (err) {
     console.log(err);
     dispatch(saveCartFailure());

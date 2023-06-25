@@ -4,6 +4,10 @@ import {mobile} from "../responsive";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
+import StripeCheckout from "react-stripe-checkout";
+import { userRequest } from "../requestMethods";
+
+const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div`
   width: 100%;
@@ -82,7 +86,11 @@ const AddProducts = () => {
 
   const token = "Bearer " + useSelector(state=>state.user.currentUser.accessToken);
 
+  const cart = useSelector((state) => state.cart);
+
   const [orders, setOrders] = useState([]);
+  
+
   const history = useHistory();
 
   const handleClick = (e) => {
@@ -112,7 +120,7 @@ const AddProducts = () => {
         <Title>Listagem de pedidos</Title>
         <Form>
 
-        { orders.map((item) => (
+        { orders.reverse().map((item) => (
             <ContainerPedido key={item.id}>
                 <ItemPedido>
                   Numero do pedido : {item.id}
@@ -132,7 +140,7 @@ const AddProducts = () => {
                 </ItemPedido>
                 <ItemPedido>
                   Valor do pedido : {item.vlr_total}
-                </ItemPedido>
+                </ItemPedido> 
             </ContainerPedido>
             )) }
           <Button onClick={handleClick}>
