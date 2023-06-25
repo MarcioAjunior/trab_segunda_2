@@ -178,14 +178,14 @@ const Cart = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const onToken = (token) => {
+  const onToken = (token) => {  
     setStripeToken(token);
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log(cart, 'MEU CART')
-    saveCart(dispatch, {...cart, idUser : usuario });
+    console.log({...cart, userId : usuario }, 'MEU CART')
+    saveCart(dispatch, {...cart, userId : usuario });
   }
 
   useEffect(() => {

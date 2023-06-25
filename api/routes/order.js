@@ -14,15 +14,8 @@ const prisma = new PrismaClient();
 router.post("/", verifyToken, async (req, res) => {
   const newOrder = new Order(req.body);
 
-  // try {
-  //   const savedOrder = await newOrder.save();
-  //   res.status(200).json(savedOrder);
-  // } catch (err) {
-  //   res.status(500).json(err);
-  // }
-
   try {
-    const {userId, total, produtos} = req.body;
+    const {userId, total, products} = req.body;
 
     const pedido = await prisma.pedido.create({
       data: {
@@ -32,7 +25,7 @@ router.post("/", verifyToken, async (req, res) => {
       },
     });
 
-    for(const item of produtos){
+    for(const item of products){
       console.log(item)
       await prisma.carrinho.create({
         data : {
