@@ -1,20 +1,40 @@
-version: '3'
+version: "3.5"
+
 services:
-  master:
-    image: mysql:latest
-    container_name: db_master
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=db_prisma
+  database_master:
+    build: 
+      context: ./custom_mysql
+    container_name: "database_master"
+    restart: unless-stopped
     ports:
       - 9090:3306
-  slave:
-    image: mysql:latest
-    container_name: db_slave
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=user
       - MYSQL_DATABASE=db_prisma
+      - MYSQL_PASSWORD=user
+    networks:
+      - mynetwork
+
+  database_slave:
+    image: mysql:8.0.30
+    container_name: "database_slave"
+    restart: unless-stopped
+    depends_on:
+      - database_master
     ports:
       - 9091:3306
-    command: mysqld --server-id=2 --log-bin=mysql-bin --relay-log=slave-relay-bin --log-slave-updates=1 --auto-increment-offset=1 --auto-increment-increment=2 --master-info-repository=TABLE --relay-log-info-repository=TABLE --replicate-do-db=db_prisma --relay-log-recovery=1
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=user
+      - MYSQL_DATABASE=db_prisma
+      - MYSQL_PASSWORD=user
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
+volumes:
+  mysqldata_master:
+  mysqldata_slave:
