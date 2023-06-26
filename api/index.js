@@ -14,12 +14,6 @@ const cors = require("cors");
 
 dotenv.config();
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("MONGOOSE CONECTADO!"))
-  .catch((err) => {
-    console.log(err);
-  });
 
   async function verificaConexaoPrisma() {
     const prisma = new PrismaClient();
